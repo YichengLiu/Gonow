@@ -40,11 +40,11 @@
 </div>
 </div>
 
-<div id="tag_cloud"" class="span1 offset4">
+<div id="tag_cloud">
 <script>
   var fill = d3.scale.category20();
 
-  d3.layout.cloud().size([800, 500])
+  d3.layout.cloud().size([800, 400])
       .words([{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"Test", size:20},{text:"热闹", size:90},{text:"好玩", size:100}])
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
@@ -53,11 +53,14 @@
       .start();
 
   function draw(words) {
-    d3.select("body").append("svg")
+    d3.select("body")
+        .append("div")
+        .attr("align", "center")
+        .append("svg")
         .attr("width", 800)
-        .attr("height", 500)
+        .attr("height", 400)
         .append("g")
-        .attr("transform", "translate(400,250)")
+        .attr("transform", "translate(400,200)")
         .selectAll("text")
         .data(words)
         .enter().append("text")
