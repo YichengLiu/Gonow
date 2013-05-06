@@ -21,10 +21,10 @@
   </style>
 </head>
 <body>
-<div style="font-family:Rafa; line-height: 100px; margin-top:50px">
-<p class="text-center"><font size="100px">Gonow</font></p>
+<div align="center" style="font-family:Rafa; line-height: 100px; margin-top:50px">
+<font size="100px">Gonow</font>
 </div>
-<div class="text-center">
+<div align="center">
 <div>
 <form action="search" method="post" class="form-search">
 <div class="input-append">
@@ -40,7 +40,6 @@
 </div>
 </div>
 
-<div id="tag_cloud">
 <script>
   var fill = d3.scale.category20();
 
@@ -74,7 +73,6 @@
         .text(function(d) { return d.text; });
   }
 </script>
-</div>
 
 </body>
 </html>
