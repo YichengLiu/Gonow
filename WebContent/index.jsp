@@ -18,11 +18,21 @@
       font-size: 20px;
       src: url(font/Rafa_bold.ttf);
     }
+    body {
+      background: url(img/street.jpg) no-repeat center center;
+      -webkit-background-size: cover;
+  -   -background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    #tag_cloud_bkg {
+      background-color:rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
 <body>
 <div align="center" style="font-family:Rafa; line-height: 100px; margin-top:50px">
-<font size="100px">Gonow</font>
+<font size="100px" color="#ccc">Gonow</font>
 </div>
 <div align="center">
 <div>
@@ -43,7 +53,7 @@
 <script>
   var fill = d3.scale.category20();
 
-  d3.layout.cloud().size([800, 400])
+  d3.layout.cloud().size([800, 300])
       .words([{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"Test", size:20},{text:"热闹", size:90},{text:"好玩", size:100}])
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
@@ -55,11 +65,13 @@
     d3.select("body")
         .append("div")
         .attr("align", "center")
+        .attr("style", "margin-top:100px")
         .append("svg")
         .attr("width", 800)
-        .attr("height", 400)
+        .attr("height", 300)
+        .attr("id", "tag_cloud_bkg")
         .append("g")
-        .attr("transform", "translate(400,200)")
+        .attr("transform", "translate(400,150)")
         .selectAll("text")
         .data(words)
         .enter().append("text")
