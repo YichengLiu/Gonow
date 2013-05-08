@@ -1,6 +1,8 @@
 *.class
+*.properties
 
 # Package Files #
 *.jar
 *.war
 *.ear
+!WebContent/WEB-INF/lib/*.jar
