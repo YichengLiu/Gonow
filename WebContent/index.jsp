@@ -18,12 +18,20 @@
       font-size: 20px;
       src: url(font/Rafa_bold.ttf);
     }
+    html {
+        height:100%;
+        margin:auto;
+        width:100%;
+    }
     body {
-      background: url(img/street.jpg) no-repeat center center;
+      background: url(img/street.jpg) no-repeat;
       -webkit-background-size: cover;
   -   -background-size: cover;
       -o-background-size: cover;
       background-size: cover;
+      width:100%;
+      margin:auto;
+      height:100%;
     }
     #tag_cloud_bkg {
       background-color:rgba(0, 0, 0, 0.5);
