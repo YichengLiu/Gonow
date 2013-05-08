@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,16 +51,25 @@ public class SearchServlet extends HttpServlet {
         Entertainment e = new Entertainment();
         e.id = "1234";
         e.name = "ceshi";
+        e.rate = 50;
         e.address = "this is a address";
-        e.keyWords = new String[] {"a", "B", "c"};
+        e.keyWords = new HashMap<String, Double>();
+        e.keyWords.put("a", 1d);
+        e.keyWords.put("b", 2d);
+        e.keyWords.put("c", 3d);
         result.add(e);
         e = new Entertainment();
         e.id = "4321";
+        e.rate = 50;
         e.name = "lingyigeceshi";
         e.address = "this is a address";
-        e.keyWords = new String[] {"a", "B", "c"};
+        e.keyWords = new HashMap<String, Double>();
+        e.keyWords.put("a", 3d);
+        e.keyWords.put("b", 2d);
+        e.keyWords.put("c", 1d);
         result.add(e);
         session.setAttribute("query", query);
+        session.setAttribute("type", "关键词");
         session.setAttribute("list", result);
         response.sendRedirect("list.jsp");
     }

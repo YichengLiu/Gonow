@@ -1,0 +1,17 @@
+.remark li {
+    height: 15px;
+}
+
+.item-rank-rst {
+    background-image: url('../img/remark.png');
+    background-repeat: no-repeat;
+    float: left;
+    width: 64px;
+    height: 12px;
+    margin: 3px 12px 0 0;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+.irr-star50 {
+    background-position: 0 0;
+}
