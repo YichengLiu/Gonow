@@ -5,10 +5,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
     String query = (String)session.getAttribute("query");
-    String searchType = (String)session.getAttribute("type");
     ArrayList<Entertainment> list = (ArrayList<Entertainment>)session.getAttribute("list");
 %>
 <title><%=query%> 的结果</title>
+<script src="js/jquery-2.0.0.min.js"></script>
+<script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css" />
 <link rel="stylesheet" href="css/remark.css" />
 <style>
@@ -42,17 +43,31 @@
 </style>
 </head>
 <body>
+<div class="navbar navbar-fixed-top" style="padding-left:10px;">
+<a class="brand" href="index.jsp">Gonow</a>
+<ul class="breadcrumb">
+  <li><a href="index.jsp">主页</a> <span class="divider">/</span></li>
+  <li><a href="index.jsp">搜索</a> <span class="divider">/</span></li>
+  <li class="active"><%= query %></li>
+</ul>
+</div>
 <div align="center" style="font-family:Rafa; line-height: 100px; margin-top:30px">
 <font size="100px" color="#aaa">Gonow</font>
 </div>
-
 <div style="width:100%;">
 <div class="section-list">
-<ul class="breadcrumb">
-  <li><a href="index.jsp">主页</a> <span class="divider">/</span></li>
-  <li><a href="index.jsp"><%= searchType %></a> <span class="divider">/</span></li>
-  <li class="active"><%= query %></li>
-</ul>
+<div style="background-color:#f5f5f5; padding-right:60px;" align="right">
+<div class="btn-group">
+  <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+    <i class="icon-user icon-white"></i> 排序方式
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu"  align="left">
+    <li><a href="#"><i class="icon-shopping-cart"></i> 按价格排序</a></li>
+    <li><a href="#"><i class="icon-heart"></i> 按评分排序</a></li>
+  </ul>
+</div>
+</div>
 <dl>
 <%
 int length = list.size();
