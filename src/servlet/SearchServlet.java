@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import db.DBInterface;
+
 import models.Entertainment;
 
 /**
@@ -25,33 +27,12 @@ import models.Entertainment;
 @WebServlet(name = "search", urlPatterns = { "/search" })
 public class SearchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-    private Properties props = new Properties();
-    private String driver = "com.mysql.jdbc.Driver";
-    private Connection conn = null;
+    private DBInterface db = null;
     /**
      * Default constructor.
      */
     public SearchServlet() {
-        try {
-            props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            conn = DriverManager.getConnection(props.getProperty("dbURL"), props.getProperty("dbUSERNAME"), props.getProperty("dbPASSWD"));
-            if(!conn.isClosed()){
-                System.out.println("Succeeded connecting to the Database");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        db = new DBInterface();
     }
 
     /**
@@ -75,28 +56,7 @@ public class SearchServlet extends HttpServlet {
 
         System.out.println(query);
 
-        ArrayList<Entertainment> result = new ArrayList<Entertainment>();
-
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * from entertainment_list where title LIKE '%" + query + "%';");
-
-            while(rs.next()) {
-                Entertainment e = new Entertainment();
-                e.id = rs.getString("id");
-                e.name = rs.getString("title");
-                e.address = rs.getString("address");
-                e.price = rs.getInt("price");
-                e.rate = rs.getInt("remark");
-                e.keyWords = new HashMap<String, Double>();
-
-                result.add(e);
-            }
-
-            statement.close();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
+        ArrayList<Entertainment> result = db.getEntertainmentByName(query);
 
         Entertainment e = new Entertainment();
         e.id = "1234";
