@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" import="db.DBInterface, models.Entertainment"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,6 +11,7 @@
 </style> 
 <%
     String id = request.getParameter("id");
+    Entertainment e = DBInterface.getInstance().getEntertainmentById(id);
 %>
 <title><%=id%> 的结果</title>
 </head>
@@ -19,8 +20,13 @@
 <div id="container"></div>
 <script type="text/javascript">
     var map = new BMap.Map("container");
-    var point = new BMap.Point(116.404, 39.915);
-    map.centerAndZoom(point, 15);
+    var geocoder = new BMap.Geocoder();
+    geocoder.getPoint("<%=e.name%>", function(point){
+        if (point) {
+            map.centerAndZoom(point, 15);
+            map.addOverlay(new BMap.Marker(point));
+        }
+    }, "北京市");
 </script>
 </div>
 </body>
