@@ -34,6 +34,9 @@
     .shopName a {
         text-decoration: none;
     }
+    dd .average {
+        color: #C00;
+    }
     .section-list {
         margin: 0 auto;
         width:800px;
@@ -75,9 +78,12 @@ for (int i = 0; i < length; i++) {
     Entertainment e = list.get(i);
 %>
     <dd>
-    <ul class="remark" style="float:right;list-style:none;width:150px;text-align:center">
+    <ul class="remark" style="float:right;list-style:none;width:150px;text-align:left">
     <li>
     <span class="item-rank-rst irr-star<%= e.rate %>"></span>
+    </li>
+    <li>
+    <strong class="average"><span class="Price">¥</span><%=e.price %></strong>
     </li>
     </ul>
     <ul class="detail" style="list-style:none;">
