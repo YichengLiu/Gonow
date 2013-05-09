@@ -7,7 +7,6 @@
     Entertainment e = DBInterface.getInstance().getEntertainmentById(id);
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!-- <script src="http://api.map.baidu.com/api?v=1.5&ak=D9afd1763d4820178898956607a1269e" type="text/javascript"></script> -->
 <script type="text/javascript">
 function initialize() {
     var map = new BMap.Map('map');
@@ -21,18 +20,18 @@ function initialize() {
 }
 
 function loadScript() {
-  var script = document.createElement("script");
-  script.src = "http://api.map.baidu.com/api?v=1.5&ak=D9afd1763d4820178898956607a1269e&callback=initialize";
-  document.body.appendChild(script);
+    var script = document.createElement("script");
+    script.src = "http://api.map.baidu.com/api?v=1.5&ak=D9afd1763d4820178898956607a1269e&callback=initialize";
+    document.body.appendChild(script);
 }
 
 window.onload = loadScript;
 </script>
-<style type="text/css">  
+<style type="text/css">
     html{height:100%}
     body{height:100%;margin:0px;padding:0px}
     #container{height:100%}
-</style> 
+</style>
 <title><%=id%> 的结果</title>
 </head>
 <body>
