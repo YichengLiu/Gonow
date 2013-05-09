@@ -71,6 +71,7 @@ public class SearchServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         String query = request.getParameter("searchWord");
+        query = query.replaceAll(".*([';]+).*", " ");
 
         System.out.println(query);
 
