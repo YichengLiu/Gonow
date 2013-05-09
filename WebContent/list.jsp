@@ -1,10 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" import="java.util.ArrayList, models.Entertainment" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" import="java.util.ArrayList, models.Entertainment, java.util.Collections, java.util.Comparator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
     String query = (String)session.getAttribute("query");
+    String sort = (String)request.getParameter("sort");
     ArrayList<Entertainment> list = (ArrayList<Entertainment>)session.getAttribute("list");
 %>
 <title><%=query%> 的结果</title>
@@ -62,17 +63,24 @@
 <div style="background-color:#f5f5f5; padding-right:60px;" align="right">
 <div class="btn-group">
   <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
-    <i class="icon-user icon-white"></i> 排序方式
+    <i class="icon-th-list icon-white"></i> 排序方式
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu"  align="left">
-    <li><a href="#"><i class="icon-shopping-cart"></i> 按价格排序</a></li>
-    <li><a href="#"><i class="icon-heart"></i> 按评分排序</a></li>
+    <li><a href="list.jsp?sort=1"><i class="icon-arrow-up"></i> 按价格从低到高</a></li>
+    <li><a href="list.jsp?sort=2"><i class="icon-arrow-down"></i> 按价格从高到低</a></li>
+    <li><a href="list.jsp?sort=3"><i class="icon-heart"></i> 按评分从高到低</a></li>
   </ul>
 </div>
 </div>
 <dl>
 <%
+if (sort != null) {
+    Comparator<Entertainment> c = Entertainment.getComparator(sort);
+    if (c != null) {
+        Collections.sort(list, Entertainment.getComparator(sort));
+    }
+}
 int length = list.size();
 for (int i = 0; i < length; i++) {
     Entertainment e = list.get(i);
