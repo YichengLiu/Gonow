@@ -3,16 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://api.map.baidu.com/api?v=1.5&ak=D9afd1763d4820178898956607a1269e" type="text/javascript"></script>
+<style type="text/css">  
+    html{height:100%}
+    body{height:100%;margin:0px;padding:0px}
+    #container{height:100%}
+</style> 
 <%
     String id = request.getParameter("id");
 %>
 <title><%=id%> 的结果</title>
 </head>
 <body>
-<div id="container" class="container_l"> 
-<div id="content_left">
-<%=id%>的细节
-</div>
+<div style="width:300px;height:300px;">
+<div id="container"></div>
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+</script>
 </div>
 </body>
 </html>
