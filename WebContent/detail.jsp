@@ -62,7 +62,7 @@ window.onload = loadScript;
     body{height:100%;margin:0px;padding:0px}
     #container{height:100%}
 </style>
-<title><%=id%> 的结果</title>
+<title><%=e.name%> - Gonow</title>
 </head>
 <body>
 <div class="navbar navbar-fixed-top" style="padding-left:10px;">
