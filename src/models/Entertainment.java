@@ -1,9 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.HashMap;
 
-public class Entertainment {
+public class Entertainment implements Serializable {
+    private static final long serialVersionUID = 7939362248585478411L;
+
     public String id;
     public String name;
     public int price;
