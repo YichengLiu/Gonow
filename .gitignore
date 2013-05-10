@@ -5,4 +5,5 @@ build/
 *.jar
 *.war
 *.ear
+!libs/*.jar
 !WebContent/WEB-INF/lib/*.jar
