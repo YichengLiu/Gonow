@@ -4,7 +4,7 @@
 <head>
 <%
     String id = request.getParameter("id");
-    Entertainment e = DBInterface.getInstance().getEntertainmentById(id);
+    Entertainment e = (Entertainment)session.getAttribute("entertainment");
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="js/jquery-2.0.0.min.js"></script>

@@ -96,7 +96,7 @@ for (int i = 0; i < length; i++) {
     </ul>
     <ul class="detail" style="list-style:none;">
     <li class="shopName">
-    <a href="/Gonow/detail.jsp?id=<%=e.id%>"><%=e.name%></a><br/>
+    <a href="/Gonow/detail?id=<%=e.id%>"><%=e.name%></a><br/>
     </li>
     <li>
     <strong>地址:</strong>
