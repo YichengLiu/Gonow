@@ -1,10 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" import="db.DBInterface, models.Entertainment"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage="" import="db.DBInterface, models.Entertainment, util.PhoneNumberExtractor"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
     String id = request.getParameter("id");
     Entertainment e = (Entertainment)session.getAttribute("entertainment");
+    String phone = PhoneNumberExtractor.extract(e.address);
+    if (phone != null) {
+        e.address = e.address.replaceAll(phone, "").trim();
+    }
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="js/jquery-2.0.0.min.js"></script>
@@ -97,6 +101,12 @@ window.onload = loadScript;
     <strong>地址:</strong>
     <%=e.address %>
     </li>
+    <li>
+    <%if (phone != null) {%>
+    <strong>电话:</strong>
+    <%=phone %>
+    </li>
+    <%} %>
     </ul>
 </dd>
 </dl>
