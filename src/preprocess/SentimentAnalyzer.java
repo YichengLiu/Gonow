@@ -8,6 +8,7 @@ import org.ansj.domain.Term;
 import org.apache.commons.io.FileUtils;
 
 import util.Config;
+import util.SubStringCounter;
 
 public class SentimentAnalyzer {
     private List<String> wordPos;
@@ -31,7 +32,12 @@ public class SentimentAnalyzer {
         int result = 0;
 
         //count for emoticons
-
+        for (String em : emoticonPos) {
+            result += SubStringCounter.count(text, "[" + em + "]");
+        }
+        for (String em : emoticonNeg) {
+            result -= SubStringCounter.count(text, "[" + em + "]");
+        }
         //count for sentiment words
 
         return result;
