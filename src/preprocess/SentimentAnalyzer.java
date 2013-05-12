@@ -28,7 +28,7 @@ public class SentimentAnalyzer {
         }
     }
 
-    public int analyze(String text, List<Term> terms) {
+    public int analyze(String text, Object terms) {
         int result = 0;
 
         //count for emoticons

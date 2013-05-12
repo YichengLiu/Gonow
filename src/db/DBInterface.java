@@ -40,6 +40,10 @@ public class DBInterface {
         }
     }
 
+    public Connection getConnection() {
+        return conn;
+    }
+
     public ArrayList<Entertainment> getEntertainmentByName(String query) {
         ArrayList<Entertainment> result = new ArrayList<Entertainment>();
 
