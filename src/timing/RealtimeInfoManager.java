@@ -55,8 +55,9 @@ public class RealtimeInfoManager {
     public static void main(String[] args) {
         try {
             Statement st = db.getConnection().createStatement();
-            ResultSet rs = st.executeQuery("select distinct(title) from entertainment_list");
+            ResultSet rs = st.executeQuery("select distinct(target) from weibo");
             while(rs.next()) {
+                System.out.println("UPDATING real-time information for " + rs.getString(1));
                 update(rs.getString(1));
             }
         } catch (SQLException e) {
