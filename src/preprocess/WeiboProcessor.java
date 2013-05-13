@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import util.StringValidator;
+
 import db.DBInterface;
 
 public class WeiboProcessor {
@@ -55,7 +57,7 @@ public class WeiboProcessor {
                         id = line;
                         break;
                     case 2:
-                        text = line.replaceAll("[^\\p{Print}]", "");;
+                        text = StringValidator.stripNonValidXMLCharacters(line);
                         break;
                     case 3:
                         seg = line;

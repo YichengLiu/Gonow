@@ -1,7 +1,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,12 +27,15 @@ public class DetailServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private DBInterface db;
+    private SimpleDateFormat sdf;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public DetailServlet() {
         super();
         db = new DBInterface();
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     }
 
     /**
@@ -37,35 +44,31 @@ public class DetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String id = request.getParameter("id");
-        Entertainment e = db.getEntertainmentById(id);
+        Entertainment en = db.getEntertainmentById(id);
 
         ArrayList<Weibo> posWeibo = new ArrayList<Weibo>();
-        Weibo test = new Weibo();
-        test.time = "today";
-        test.text = "hehe";
-        posWeibo.add(test);
-        test = new Weibo();
-        test.time = "today";
-        test.text = "very hehe";
-        posWeibo.add(test);
-
-        test = new Weibo();
-        test.time = "today";
-        test.text = "very hehe";
-        posWeibo.add(test);
-
-        test = new Weibo();
-        test.time = "today";
-        test.text = "very hehe";
-        posWeibo.add(test);
         ArrayList<Weibo> negWeibo = new ArrayList<Weibo>();
-        test = new Weibo();
-        test.time = "today";
-        test.text = "cao";
-        negWeibo.add(test);
 
-        session.setAttribute("pos_percent", new Integer(60));
-        session.setAttribute("entertainment", e);
+        String query = "SELECT create_at, text, sentiment FROM weibo where target = '" + en.name + "' ORDER BY create_at DESC;";
+        try {
+            ResultSet rs = db.getConnection().createStatement().executeQuery(query);
+            while(rs.next()) {
+                Weibo weibo = new Weibo();
+                weibo.time = sdf.format(new Date(rs.getDate(1).getTime()));
+                weibo.text = rs.getString(2);
+                weibo.emotion = rs.getInt(3);
+                if (weibo.emotion > 0) {
+                    posWeibo.add(weibo);
+                } else if (weibo.emotion < 0) {
+                    negWeibo.add(weibo);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        session.setAttribute("pos_percent", new Integer((int)(1.0 * posWeibo.size() / (posWeibo.size() + negWeibo.size()) * 100)));
+        session.setAttribute("entertainment", en);
         session.setAttribute("pos", posWeibo);
         session.setAttribute("neg", negWeibo);
 

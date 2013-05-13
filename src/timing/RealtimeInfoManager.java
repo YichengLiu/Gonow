@@ -1,5 +1,7 @@
 package timing;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,16 +28,39 @@ public class RealtimeInfoManager {
                 texts.add(text);
                 segs.add(seg);
             }
-            List<WeightedWord> keyWords = ckw.compute(texts, segs);
-            for (WeightedWord ww : keyWords) {
-                System.out.println(ww.word);
+            st.close();
+
+            String insql="INSERT INTO keyword (target, keyword) VALUES (?, ?) ON DUPLICATE KEY UPDATE keyword = ?";
+            PreparedStatement ps = null;
+            try {
+                ps = db.getConnection().prepareStatement(insql);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            List<WeightedWord> keyWords = ckw.compute(texts, segs);
+            StringBuilder keywordBuilder = new StringBuilder();
+            for (WeightedWord ww : keyWords) {
+                keywordBuilder.append(ww.word + "::=" + ww.score + "::;");
+            }
+            ps.setString(1, target);
+            ps.setString(2, keywordBuilder.toString());
+            ps.setString(3, keywordBuilder.toString());
+            ps.executeUpdate();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        update("三里屯酒吧街");
+        try {
+            Statement st = db.getConnection().createStatement();
+            ResultSet rs = st.executeQuery("select distinct(title) from entertainment_list");
+            while(rs.next()) {
+                update(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

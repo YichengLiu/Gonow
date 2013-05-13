@@ -191,7 +191,7 @@ window.onload = loadScript;
 <div class="weibo-list pos-weibo-list">
 <ul style="margin-left:0px;width:100%;list-style:none;">
 <% for (Weibo weibo : posWeibo) { %>
-<li style="margin:10px;">
+<li style="margin:0px;">
 <span style="font-size:12px;color:#888"><%=weibo.time %></span>
 <br/>
 <span style="font-size:16px"><%=weibo.text %></span>
