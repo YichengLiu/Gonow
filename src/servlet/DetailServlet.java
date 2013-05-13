@@ -98,7 +98,7 @@ public class DetailServlet extends HttpServlet {
                 Keyword k = new Keyword();
                 String[] sp = w.split("::=");
                 k.word = sp[0];
-                k.weight = (int)(Integer.valueOf(sp[1]) / 10) + 10;
+                k.weight = (int)(Integer.valueOf(sp[1]) / 10) + 15;
                 keywordList.add(k);
             }
             st.close();
