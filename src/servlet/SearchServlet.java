@@ -58,6 +58,9 @@ public class SearchServlet extends HttpServlet {
 
         ArrayList<Entertainment> result = db.getEntertainmentByName(query);
 
+        if (result.size() == 0) {
+            result = db.getEntertainmentByKeyword(query);
+        }
         session.setAttribute("query", query);
         session.setAttribute("type", "关键词");
         session.setAttribute("list", result);

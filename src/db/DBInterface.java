@@ -69,6 +69,31 @@ public class DBInterface {
         }
         return result;
     }
+    public ArrayList<Entertainment> getEntertainmentByKeyword(String query) {
+        ArrayList<Entertainment> result = new ArrayList<Entertainment>();
+
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT entertainment_list.* from entertainment_list join keyword on entertainment_list.title = keyword.target where keyword.keyword LIKE '%" + query + "::=%';");
+
+            while(rs.next()) {
+                Entertainment e = new Entertainment();
+                e.id = rs.getString("id");
+                e.name = rs.getString("title");
+                e.address = rs.getString("address");
+                e.price = rs.getInt("price");
+                e.rate = rs.getInt("remark");
+                e.keyWords = new HashMap<String, Double>();
+
+                result.add(e);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public Entertainment getEntertainmentById(String id) {
         Entertainment result = new Entertainment();
