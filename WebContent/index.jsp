@@ -8,8 +8,7 @@
   <script src="js/jquery-2.0.0.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <link rel="stylesheet" href="css/bootstrap.css" />
-  <link rel="stylesheet" href="css/gallery-checkbox.css" />
-  <script src="js/d3.js"></script>
+  <script src="js/d3.v3.js"></script>
   <script src="js/d3.layout.cloud.js"></script>
   <style> 
     @font-face
@@ -61,11 +60,12 @@
 <script>
   var fill = d3.scale.category20();
 
+  d3.csv("data/global_keywords.csv", function(topic) {
   d3.layout.cloud().size([800, 300])
-      .words([{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"呵呵", size:50},{text:"Test", size:20},{text:"热闹", size:90},{text:"好玩", size:100}])
+      .words(topic)
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
-      .fontSize(function(d) { return d.size; })
+      .fontSize(function(d) {return Math.random() * 20 + 10; })
       .on("end", draw)
       .start();
 
@@ -91,7 +91,7 @@
           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
         })
         .text(function(d) { return d.text; });
-  }
+  }})
 </script>
 
 </body>
