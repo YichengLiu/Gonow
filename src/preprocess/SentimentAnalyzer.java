@@ -42,7 +42,14 @@ public class SentimentAnalyzer {
 
         //count for sentiment words
         for (String term : terms.split(" ")) {
-            String word = term.substring(0, term.indexOf("/"));
+            int tagPos = term.indexOf("/");
+            String word;
+            if (tagPos == -1) {
+                word = term;
+            } else {
+                word = term.substring(0, term.indexOf("/"));
+            }
+
             if (wordPos.contains(word)) {
                 result += 1;
             } else if (wordNeg.contains(word)) {
