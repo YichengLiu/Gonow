@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import util.Config;
 
 import models.Entertainment;
+import models.Keyword;
 import models.Weibo;
 
 import db.DBInterface;
@@ -64,7 +66,8 @@ public class DetailServlet extends HttpServlet {
         System.out.println(query);
 
         try {
-            ResultSet rs = db.getConnection().createStatement().executeQuery(query);
+            Statement st = db.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(query);
             while(rs.next()) {
                 Weibo weibo = new Weibo();
                 weibo.time = sdf.format(new Date(rs.getTimestamp(1).getTime()));
@@ -76,12 +79,36 @@ public class DetailServlet extends HttpServlet {
                     negWeibo.add(weibo);
                 }
             }
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        query = "SELECT keyword from keyword WHERE target = '" + en.name + "';";
+        ArrayList<Keyword> keywordList = new ArrayList<Keyword>();
+        try {
+            Statement st = db.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            String keywords = null;
+            while(rs.next()) {
+                keywords = rs.getString(1);
+            }
+            String[] words = keywords.split("::;");
+            for (String w : words) {
+                Keyword k = new Keyword();
+                String[] sp = w.split("::=");
+                k.word = sp[0];
+                k.weight = (int)(Integer.valueOf(sp[1]) / 10) + 10;
+                keywordList.add(k);
+            }
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         session.setAttribute("pos_percent", new Integer((int)(1.0 * posWeibo.size() / (posWeibo.size() + negWeibo.size()) * 100)));
         session.setAttribute("entertainment", en);
+        session.setAttribute("keywords", keywordList);
         session.setAttribute("pos", posWeibo);
         session.setAttribute("neg", negWeibo);
 

@@ -10,12 +10,15 @@
         e.address = e.address.replaceAll(phone, "").trim();
     }
     int posPercent = (Integer)session.getAttribute("pos_percent");
+    ArrayList<Keyword> keywordList = (ArrayList<Keyword>)session.getAttribute("keywords");
     ArrayList<Weibo> posWeibo = (ArrayList<Weibo>)session.getAttribute("pos");
     ArrayList<Weibo> negWeibo = (ArrayList<Weibo>)session.getAttribute("neg");
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="js/jquery-2.0.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/d3.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css" />
 <link rel="stylesheet" href="css/remark.css" />
 <style type="text/css">
@@ -137,7 +140,7 @@ window.onload = loadScript;
 <div align="center" style="font-family:Rafa; line-height: 100px; margin-top:30px">
 <font size="100px" color="#aaa">Gonow</font>
 </div>
-<div style="width:100%;">
+<div class="main-section" style="width:100%;">
 <div class="info-section">
 <div id="map" style="width:300px;height:250px;float:right"></div>
 <div style="width:400px;height:250px;">
@@ -169,6 +172,44 @@ window.onload = loadScript;
 </dl>
 </div>
 </div>
+<script>
+  var fill = d3.scale.category20();
+
+  d3.layout.cloud().size([710, 300])
+      .words([
+              <% for (Keyword k : keywordList) {%>
+              {text:"<%=k.word%>", size:<%=k.weight%>},
+              <% } %>
+            ])
+      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+      .font("Impact")
+      .fontSize(function(d) { return d.size; })
+      .on("end", draw)
+      .start();
+
+  function draw(words) {
+    d3.select(".main-section")
+        .append("div")
+        .attr("align", "center")
+        .append("svg")
+        .attr("width", 800)
+        .attr("height", 300)
+        .attr("id", "tag_cloud_bkg")
+        .append("g")
+        .attr("transform", "translate(400,150)")
+        .selectAll("text")
+        .data(words)
+        .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
+</script>
 <div class="weibo-section">
 <div class="neg-weibo-section">
 <%int negPercent = (100 - posPercent);%>
