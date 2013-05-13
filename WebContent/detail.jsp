@@ -44,10 +44,14 @@
         width:310px;
         height:100%;
     }
+    .pos-weibo-section strong {
+        font-size:30px;
+        line-height:50px;
+    }
     .pos-weibo-list {
         width:100%;
         height:100%;
-        border: 2px solid #e11;
+        border: 2px solid #c00;
         border-top-left-radius:3px;
         border-bottom-left-radius:3px;
         overflow:auto
@@ -57,6 +61,10 @@
         height:100%;
         float:right;
         text-align:right;
+    }
+    .neg-weibo-section strong {
+        font-size:30px;
+        line-height:50px;
     }
     .neg-weibo-list {
         width:100%;
@@ -164,13 +172,14 @@ window.onload = loadScript;
 <div class="weibo-section">
 <div class="neg-weibo-section">
 <%int negPercent = (100 - posPercent);%>
-<%=negPercent%>%<strong>踩</strong>
+<font color="#000"><span style="font-size:25px"><%=negPercent%>%</span><strong>踩</strong></font>
 <div class="weibo-list neg-weibo-list">
 <ul style="margin-left:0px;width:100%;list-style:none;">
 <% for (Weibo weibo : negWeibo) { %>
 <li style="margin:10px;">
-<p><%=weibo.time %></p>
-<p><%=weibo.text %></p>
+<span style="font-size:12px;color:#888"><%=weibo.time %></span>
+<br/>
+<span style="font-size:16px"><%=weibo.text %></span>
 </li>
 <li class="sep"></li>
 <% } %>
@@ -178,13 +187,14 @@ window.onload = loadScript;
 </div>
 </div>
 <div class="pos-weibo-section">
-<strong>顶</strong><%=posPercent%>%
+<font color="#c00"><strong>顶</strong><span style="font-size:25px"><%=posPercent%>%</span></font>
 <div class="weibo-list pos-weibo-list">
 <ul style="margin-left:0px;width:100%;list-style:none;">
 <% for (Weibo weibo : posWeibo) { %>
 <li style="margin:10px;">
-<p><%=weibo.time %></p>
-<p><%=weibo.text %></p>
+<span style="font-size:12px;color:#888"><%=weibo.time %></span>
+<br/>
+<span style="font-size:16px"><%=weibo.text %></span>
 </li>
 <li class="sep"></li>
 <% } %>
