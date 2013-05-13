@@ -2,6 +2,7 @@ package preprocess;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Term;
@@ -28,17 +29,26 @@ public class SentimentAnalyzer {
         }
     }
 
-    public int analyze(String text, Object terms) {
+    public int analyze(String text, String terms) {
         int result = 0;
 
         //count for emoticons
         for (String em : emoticonPos) {
-            result += SubStringCounter.count(text, "[" + em + "]");
+            result += 2 * SubStringCounter.count(text, "[" + em + "]");
         }
         for (String em : emoticonNeg) {
-            result -= SubStringCounter.count(text, "[" + em + "]");
+            result -= 2 * SubStringCounter.count(text, "[" + em + "]");
         }
+
         //count for sentiment words
+        for (String term : terms.split(" ")) {
+            String word = term.substring(0, term.indexOf("/"));
+            if (wordPos.contains(word)) {
+                result += 1;
+            } else if (wordNeg.contains(word)) {
+                result -= 1;
+            }
+        }
 
         return result;
     }

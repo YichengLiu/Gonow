@@ -13,5 +13,8 @@
 	<classpathentry kind="lib" path="libs/tree-split-word.jar"/>
 	<classpathentry kind="lib" path="libs/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="libs/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="libs/base.jar"/>
+	<classpathentry kind="lib" path="libs/hadoop-0.20.1-core.jar"/>
+	<classpathentry kind="lib" path="libs/Keyword.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -26,7 +26,7 @@ public class WeiboProcessor {
 
         DBInterface db = new DBInterface();
         Connection conn = db.getConnection();
-        String insql="insert into weibo (id, time, target, text, segment, sentiment) values(?,?,?,?,?,?)";
+        String insql="insert into weibo (id, create_at, target, text, segment, sentiment) values(?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(insql);
@@ -44,9 +44,10 @@ public class WeiboProcessor {
                 String time = null;
                 String id = null;
                 String text = null;
+                String seg = null;
 
                 for (String line : lines) {
-                    switch (lineNum % 3) {
+                    switch (lineNum % 4) {
                     case 0:
                         time = line;
                         break;
@@ -54,21 +55,32 @@ public class WeiboProcessor {
                         id = line;
                         break;
                     case 2:
-                        text = line;
+                        text = line.replaceAll("[^\\p{Print}]", "");;
+                        break;
+                    case 3:
+                        seg = line;
+
+                        if (seg.isEmpty()) {
+                            break;
+                        }
+
                         Date createAt = null;
                         try {
                             createAt = format.parse(time);
                         } catch (ParseException e) {
                             e.printStackTrace();
-                            continue;
+                            break;
                         }
-                        Object words = segmenter.segment(text);
+                        System.out.println(id + " " + text + " "+ seg);
+                        //String words = segmenter.segment(text);
+                        String words = seg;
                         int sentiment = analyzer.analyze(text, words);
+                        System.out.println(sentiment);
                         ps.setString(1, id);
                         ps.setDate(2, new java.sql.Date(createAt.getTime()));
                         ps.setString(3, target);
                         ps.setString(4, text);
-                        ps.setString(5, words.toString());
+                        ps.setString(5, words);
                         ps.setInt(6, sentiment);
                         ps.addBatch();
                         if ((++count) % 1000 == 0) {
@@ -88,5 +100,6 @@ public class WeiboProcessor {
     }
 
     public static void main(String[] args) {
+        process("/home/gods/new/");
     }
 }
