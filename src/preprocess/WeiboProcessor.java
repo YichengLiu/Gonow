@@ -79,7 +79,7 @@ public class WeiboProcessor {
                         int sentiment = analyzer.analyze(text, words);
                         System.out.println(sentiment);
                         ps.setString(1, id);
-                        ps.setDate(2, new java.sql.Date(createAt.getTime()));
+                        ps.setTimestamp(2, new java.sql.Timestamp(createAt.getTime()));
                         ps.setString(3, target);
                         ps.setString(4, text);
                         ps.setString(5, words);
