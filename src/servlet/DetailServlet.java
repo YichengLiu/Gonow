@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import util.Config;
 
 import models.Entertainment;
 import models.Weibo;
@@ -35,7 +38,7 @@ public class DetailServlet extends HttpServlet {
     public DetailServlet() {
         super();
         db = new DBInterface();
-        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     /**
@@ -49,12 +52,22 @@ public class DetailServlet extends HttpServlet {
         ArrayList<Weibo> posWeibo = new ArrayList<Weibo>();
         ArrayList<Weibo> negWeibo = new ArrayList<Weibo>();
 
-        String query = "SELECT create_at, text, sentiment FROM weibo where target = '" + en.name + "' ORDER BY create_at DESC;";
+        Date currentTime = null, deadline = null;
+        try {
+            currentTime = sdf.parse(Config.getProperties().getProperty("SYSTEM_TIME"));
+            deadline = new Date(currentTime.getTime() - 7 * 24 * 3600 * 1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT create_at, text, sentiment FROM weibo where target = '" + en.name + "' AND create_at BETWEEN '" + sdf.format(deadline) + "' AND '" + sdf.format(currentTime) + "' ORDER BY create_at DESC;";
+        System.out.println(query);
+
         try {
             ResultSet rs = db.getConnection().createStatement().executeQuery(query);
             while(rs.next()) {
                 Weibo weibo = new Weibo();
-                weibo.time = sdf.format(new Date(rs.getDate(1).getTime()));
+                weibo.time = sdf.format(new Date(rs.getTimestamp(1).getTime()));
                 weibo.text = rs.getString(2);
                 weibo.emotion = rs.getInt(3);
                 if (weibo.emotion > 0) {
