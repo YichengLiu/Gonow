@@ -57,12 +57,13 @@ public class SearchServlet extends HttpServlet {
         System.out.println(query);
 
         ArrayList<Entertainment> result = db.getEntertainmentByName(query);
+        session.setAttribute("type", "景点搜索");
 
         if (result.size() == 0) {
             result = db.getEntertainmentByKeyword(query);
+            session.setAttribute("type", "关键词搜索");
         }
         session.setAttribute("query", query);
-        session.setAttribute("type", "关键词");
         session.setAttribute("list", result);
         response.sendRedirect("list.jsp");
     }

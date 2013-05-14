@@ -6,6 +6,7 @@
 <%
     String query = (String)session.getAttribute("query");
     String sort = (String)request.getParameter("sort");
+    String type = (String)session.getAttribute("type");
     ArrayList<Entertainment> list = (ArrayList<Entertainment>)session.getAttribute("list");
 %>
 <title><%=query%> 的结果</title>
@@ -51,7 +52,7 @@
 <a class="brand" href="index.jsp">Gonow</a>
 <ul class="breadcrumb">
   <li><a href="index.jsp">主页</a> <span class="divider">/</span></li>
-  <li><a href="index.jsp">搜索</a> <span class="divider">/</span></li>
+  <li><a href="index.jsp"><%=type %></a> <span class="divider">/</span></li>
   <li class="active"><%= query %></li>
 </ul>
 </div>

@@ -57,7 +57,7 @@ public class DetailServlet extends HttpServlet {
         Date currentTime = null, deadline = null;
         try {
             currentTime = sdf.parse(Config.getProperties().getProperty("SYSTEM_TIME"));
-            deadline = new Date(currentTime.getTime() - 7 * 24 * 3600 * 1000);
+            deadline = new Date(currentTime.getTime() - 15 * 24 * 3600 * 1000);
         } catch (ParseException e) {
             e.printStackTrace();
         }

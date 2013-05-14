@@ -102,6 +102,6 @@ public class WeiboProcessor {
     }
 
     public static void main(String[] args) {
-        process("/home/gods/new/");
+        process("/home/gods/U/segment/");
     }
 }
