@@ -1,6 +1,8 @@
 package models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -12,12 +14,36 @@ public class Entertainment implements Serializable {
     public int price;
     public int rate;
     public String address;
-    public HashMap<String, Double> keyWords;
+    public ArrayList<Keyword> keyWords;
 
-    public String getKeywordList() {
+    class Keyword implements Comparable<Keyword> {
+        String word;
+        int score;
+
+        Keyword(String word, int score) {
+            this.word = word;
+            this.score = score;
+        }
+
+        @Override
+        public int compareTo(Keyword o) {
+            return o.score - this.score;
+        }
+    }
+
+    public void setKeyword(String keywordStr) {
+        keyWords = new ArrayList<Keyword>();
+        for (String keywordPair : keywordStr.split("::;")) {
+            String[] sp = keywordPair.split("::=");
+            keyWords.add(new Keyword(sp[0], Integer.valueOf(sp[1])));
+        }
+        Collections.sort(keyWords);
+    }
+
+    public String getKeywordList(int limit) {
         StringBuilder sb = new StringBuilder();
-        for (String keyWord : keyWords.keySet()) {
-            sb.append(keyWord + "&nbsp;&nbsp;");
+        for (int i = 0; i < limit; i++) {
+            sb.append(keyWords.get(i).word + "&nbsp;&nbsp;");
         }
         return sb.toString();
     }

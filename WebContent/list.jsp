@@ -106,7 +106,7 @@ for (int i = 0; i < length; i++) {
     </li>
     <li>
     <strong>关键词:</strong>
-    <%= e.getKeywordList() %>
+    <%= e.getKeywordList(5) %>
     </li>
     <li>&nbsp;</li>
     </ul>

@@ -49,7 +49,7 @@ public class DBInterface {
 
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * from entertainment_list where title LIKE '%" + query + "%';");
+            ResultSet rs = statement.executeQuery("SELECT entertainment_list.*, keyword.keyword from entertainment_list join keyword on entertainment_list.title = keyword.target where title LIKE '%" + query + "%';");
 
             while(rs.next()) {
                 Entertainment e = new Entertainment();
@@ -58,7 +58,7 @@ public class DBInterface {
                 e.address = rs.getString("address");
                 e.price = rs.getInt("price");
                 e.rate = rs.getInt("remark");
-                e.keyWords = new HashMap<String, Double>();
+                e.setKeyword(rs.getString("keyword"));
 
                 result.add(e);
             }
@@ -74,7 +74,7 @@ public class DBInterface {
 
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT entertainment_list.* from entertainment_list join keyword on entertainment_list.title = keyword.target where keyword.keyword LIKE '%" + query + "::=%';");
+            ResultSet rs = statement.executeQuery("SELECT entertainment_list.*, keyword.keyword from entertainment_list join keyword on entertainment_list.title = keyword.target where keyword.keyword LIKE '%" + query + "::=%';");
 
             while(rs.next()) {
                 Entertainment e = new Entertainment();
@@ -83,7 +83,7 @@ public class DBInterface {
                 e.address = rs.getString("address");
                 e.price = rs.getInt("price");
                 e.rate = rs.getInt("remark");
-                e.keyWords = new HashMap<String, Double>();
+                e.setKeyword(rs.getString("keyword"));
 
                 result.add(e);
             }
@@ -100,7 +100,7 @@ public class DBInterface {
 
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * from entertainment_list where id = '" + id + "';");
+            ResultSet rs = statement.executeQuery("SELECT entertainment_list.* from entertainment_list where id = '" + id + "';");
 
             while(rs.next()) {
                 result.id = rs.getString("id");
@@ -108,7 +108,6 @@ public class DBInterface {
                 result.address = rs.getString("address");
                 result.price = rs.getInt("price");
                 result.rate = rs.getInt("remark");
-                result.keyWords = new HashMap<String, Double>();
             }
 
             statement.close();
