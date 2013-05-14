@@ -15,6 +15,8 @@
     ArrayList<Weibo> negWeibo = (ArrayList<Weibo>)session.getAttribute("neg");
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="shortcut icon" href="img/sun-cloud.png" />
+<title><%=e.name%> - Gonow</title>
 <script src="js/jquery-2.0.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/d3.js"></script>
@@ -126,7 +128,6 @@ window.onload = loadScript;
     body{height:100%;margin:0px;padding:0px}
     #container{height:100%}
 </style>
-<title><%=e.name%> - Gonow</title>
 </head>
 <body>
 <div class="navbar navbar-fixed-top" style="padding-left:10px;">

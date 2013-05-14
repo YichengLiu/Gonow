@@ -9,6 +9,7 @@
     String type = (String)session.getAttribute("type");
     ArrayList<Entertainment> list = (ArrayList<Entertainment>)session.getAttribute("list");
 %>
+<link rel="shortcut icon" href="img/sun-cloud.png" />
 <title><%=query%> 的结果</title>
 <script src="js/jquery-2.0.0.min.js"></script>
 <script src="js/bootstrap.js"></script>

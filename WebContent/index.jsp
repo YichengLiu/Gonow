@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="shortcut icon" href="img/sun-cloud.png" />
   <title>Gonow</title>
   <script src="js/jquery-2.0.0.min.js"></script>
   <script src="js/bootstrap.js"></script>
