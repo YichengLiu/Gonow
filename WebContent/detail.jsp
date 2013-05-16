@@ -104,8 +104,10 @@
     }
 </style>
 <script type="text/javascript">
+var map;
+
 function initialize() {
-    var map = new BMap.Map('map');
+    map = new BMap.Map('map');
     var geocoder = new BMap.Geocoder();
     geocoder.getPoint("<%=e.name%>", function(point){
         if (point) {
@@ -113,6 +115,22 @@ function initialize() {
             map.addOverlay(new BMap.Marker(point));
         }
     }, "北京市");
+}
+
+function drivingRoute() {
+    var currentLocation = document.getElementById("current-location").value;
+    var transit = new BMap.DrivingRoute(map, {
+        renderOptions: {map: map}
+    });
+    transit.search(currentLocation, "<%=e.name%>");
+}
+
+function transitRoute() {
+    var currentLocation = document.getElementById("current-location").value;
+    var transit = new BMap.TransitRoute(map, {
+        renderOptions: {map: map}
+    });
+    transit.search(currentLocation, "<%=e.name%>");
 }
 
 function loadScript() {
@@ -169,6 +187,21 @@ window.onload = loadScript;
     </li>
     <%} %>
     </ul>
+</dd>
+<dd>
+<input id="current-location" type="text" placeholder="我现在在..." style="margin-left:20px;margin-top:20px;"/>
+</dd>
+<dd>
+<div class="btn-group" style="margin-left:20px;">
+  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+  Gonow!
+  <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><a href="javascript:drivingRoute()">查看自驾方案</a></li>
+    <li><a href="javascript:transitRoute()">查看公交方案</a></li>
+  </ul>
+</div>
 </dd>
 </dl>
 </div>
