@@ -16,7 +16,9 @@ public class Entertainment implements Serializable {
     public String address;
     public ArrayList<Keyword> keyWords;
 
-    class Keyword implements Comparable<Keyword> {
+    class Keyword implements Comparable<Keyword>, Serializable {
+        private static final long serialVersionUID = -5663020142273177555L;
+
         String word;
         int score;
 
@@ -42,7 +44,7 @@ public class Entertainment implements Serializable {
 
     public String getKeywordList(int limit) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < limit; i++) {
+        for (int i = 0; i < limit && i < keyWords.size(); i++) {
             sb.append(keyWords.get(i).word + "&nbsp;&nbsp;");
         }
         return sb.toString();
@@ -99,5 +101,19 @@ public class Entertainment implements Serializable {
         }
 
         return c;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Entertainment) {
+            return this.id.equals(((Entertainment)obj).id);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 }

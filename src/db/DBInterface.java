@@ -60,7 +60,9 @@ public class DBInterface {
                 e.rate = rs.getInt("remark");
                 e.setKeyword(rs.getString("keyword"));
 
-                result.add(e);
+                if (result.contains(e) == false) {
+                    result.add(e);
+                }
             }
 
             statement.close();
@@ -69,6 +71,7 @@ public class DBInterface {
         }
         return result;
     }
+
     public ArrayList<Entertainment> getEntertainmentByKeyword(String query) {
         ArrayList<Entertainment> result = new ArrayList<Entertainment>();
 
@@ -92,6 +95,38 @@ public class DBInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    public ArrayList<Entertainment> getRandomEntertainment(int limit) {
+        ArrayList<Entertainment> result = new ArrayList<Entertainment>();
+
+        try {
+            while (result.size() < limit) {
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT r1.*, keyword.keyword FROM entertainment_list AS r1" +
+                        " JOIN (SELECT (RAND() * (SELECT MAX(id) FROM entertainment_list)) AS id) AS r2" +
+                        " JOIN keyword ON r1.title = keyword.target" +
+                        " WHERE r1.id >= r2.id  AND r1.remark > 35 ORDER BY r1.id ASC  LIMIT 1;");
+
+                while(rs.next()) {
+                    Entertainment e = new Entertainment();
+                    e.id = rs.getString("id");
+                    e.name = rs.getString("title");
+                    e.address = rs.getString("address");
+                    e.price = rs.getInt("price");
+                    e.rate = rs.getInt("remark");
+                    e.setKeyword(rs.getString("keyword"));
+
+                    result.add(e);
+                }
+
+                statement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 

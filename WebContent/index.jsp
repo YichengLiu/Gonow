@@ -52,7 +52,7 @@
 </form>
 </div>
 <div>
-<form action="hot">
+<form action="hot" method="get">
 <input class="btn btn-info" type="submit" value="随便看看" />
 </form>
 </div>
