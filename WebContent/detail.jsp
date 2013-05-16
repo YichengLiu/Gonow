@@ -102,6 +102,46 @@
     dd .average {
         color: #C00;
     }
+    /* Static state */
+    #cover {
+        width: 300px;
+        height: 250px;
+        position: absolute;
+        right:0;
+        border: 1px solid #ccc;
+        float:right;
+        z-index:1;
+    }
+    .parent1 {
+        /* overall animation container */
+        height: 0;
+        overflow: hidden;
+        transition-property: height;
+        transition-duration: 1s;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+    .parent2 {
+        /* full content during animation *can* go here */
+    }
+    .parent3 {
+        /* animated, "folded" block */
+        height: 250px;
+        margin: 0 auto;
+        overflow: auto;
+        transition-property: all;
+        transition-duration: 1s;
+        transform: rotateX(-90deg);
+        transform-origin: top;
+    }
+    /* Hover states to trigger animations */
+    #cover:hover .parent1 {
+        height: 250px;
+    }
+    #cover:hover .parent3 {
+        transform: rotateX(0deg);
+        height: 250px;
+    }
 </style>
 <script type="text/javascript">
 var map;
@@ -120,7 +160,7 @@ function initialize() {
 function drivingRoute() {
     var currentLocation = document.getElementById("current-location").value;
     var transit = new BMap.DrivingRoute(map, {
-        renderOptions: {map: map}
+        renderOptions: {map: map, panel: "bus"}
     });
     transit.search(currentLocation, "<%=e.name%>");
 }
@@ -128,7 +168,7 @@ function drivingRoute() {
 function transitRoute() {
     var currentLocation = document.getElementById("current-location").value;
     var transit = new BMap.TransitRoute(map, {
-        renderOptions: {map: map}
+        renderOptions: {map: map, panel: "bus"}
     });
     transit.search(currentLocation, "<%=e.name%>");
 }
@@ -161,7 +201,16 @@ window.onload = loadScript;
 </div>
 <div class="main-section" style="width:100%;">
 <div class="info-section">
-<div id="map" style="width:300px;height:250px;float:right"></div>
+<div id="cover">
+    <div class="parent1">
+        <div class="parent2">
+            <div class="parent3">
+                <div id="bus"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="map" style="width:300px;height:250px;float:right;position:absolute;right:0;"></div>
 <div style="width:400px;height:250px;">
 <dl>
 <dd>
