@@ -77,15 +77,23 @@
 </div>
 <dl>
 <%
-if (sort != null) {
-    Comparator<Entertainment> c = Entertainment.getComparator(sort);
-    if (c != null) {
-        Collections.sort(list, Entertainment.getComparator(sort));
-    }
-}
 int length = list.size();
-for (int i = 0; i < length; i++) {
-    Entertainment e = list.get(i);
+if (length == 0) {
+%>
+<div class="alert alert-error">
+    没有搜索结果
+    <a href="/Gonow/index.jsp">返回首页</a>
+</div>
+<%
+} else {
+    if (sort != null) {
+        Comparator<Entertainment> c = Entertainment.getComparator(sort);
+        if (c != null) {
+            Collections.sort(list, Entertainment.getComparator(sort));
+        }
+	}
+	for (int i = 0; i < length; i++) {
+	    Entertainment e = list.get(i);
 %>
     <dd>
     <ul class="remark" style="float:right;list-style:none;width:150px;text-align:left">
@@ -112,10 +120,11 @@ for (int i = 0; i < length; i++) {
     </ul>
     </dd>
 <%
-    if (i != length - 1) {
+        if (i != length - 1) {
 %>
     <hr/>
 <%
+        }
     }
 }
 %>
