@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
 import models.Entertainment;
 
 public class DBInterface {
     private Properties props = new Properties();
     private String driver = "com.mysql.jdbc.Driver";
-    private Connection conn = null;
-    private static DBInterface instance = new DBInterface();
+    private DataSource datasource = null;
 
     public DBInterface() {
         try {
@@ -25,27 +27,56 @@ public class DBInterface {
             e.printStackTrace();
         }
         try {
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            conn = DriverManager.getConnection(props.getProperty("dbURL"), props.getProperty("dbUSERNAME"), props.getProperty("dbPASSWD"));
-            if(!conn.isClosed()){
-                System.out.println("Succeeded connecting to the Database");
-            }
-        } catch (SQLException e) {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        PoolProperties p = new PoolProperties();
+        p.setUrl(props.getProperty("dbURL"));
+        p.setDriverClassName(driver);
+        p.setUsername(props.getProperty("dbUSERNAME"));
+        p.setPassword(props.getProperty("dbPASSWD"));
+        p.setJmxEnabled(true);
+        p.setTestWhileIdle(false);
+        p.setTestOnBorrow(true);
+        p.setValidationQuery("SELECT 1");
+        p.setTestOnReturn(false);
+        p.setValidationInterval(30000);
+        p.setTimeBetweenEvictionRunsMillis(30000);
+        p.setMaxActive(100);
+        p.setInitialSize(10);
+        p.setMaxWait(10000);
+        p.setRemoveAbandonedTimeout(60);
+        p.setMinEvictableIdleTimeMillis(30000);
+        p.setMinIdle(10);
+        p.setLogAbandoned(true);
+        p.setRemoveAbandoned(true);
+        p.setJdbcInterceptors(
+          "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
+          "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+        datasource = new DataSource();
+        datasource.setPoolProperties(p);
     }
 
     public Connection getConnection() {
+        Connection conn = null;
+        try {
+            conn = datasource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return conn;
     }
 
     public ArrayList<Entertainment> getEntertainmentByName(String query) {
         ArrayList<Entertainment> result = new ArrayList<Entertainment>();
+        Connection conn = null;
+        try {
+            conn = datasource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             Statement statement = conn.createStatement();
@@ -77,6 +108,12 @@ public class DBInterface {
 
     public ArrayList<Entertainment> getEntertainmentByKeyword(String query) {
         ArrayList<Entertainment> result = new ArrayList<Entertainment>();
+        Connection conn = null;
+        try {
+            conn = datasource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             Statement statement = conn.createStatement();
@@ -103,6 +140,12 @@ public class DBInterface {
 
     public ArrayList<Entertainment> getRandomEntertainment(int limit) {
         ArrayList<Entertainment> result = new ArrayList<Entertainment>();
+        Connection conn = null;
+        try {
+            conn = datasource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             while (result.size() < limit) {
@@ -135,6 +178,12 @@ public class DBInterface {
 
     public Entertainment getEntertainmentById(String id) {
         Entertainment result = new Entertainment();
+        Connection conn = null;
+        try {
+            conn = datasource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             Statement statement = conn.createStatement();
@@ -154,9 +203,5 @@ public class DBInterface {
         }
 
         return result;
-    }
-
-    public static DBInterface getInstance() {
-        return instance;
     }
 }
