@@ -58,6 +58,9 @@ public class DBInterface {
                 e.address = rs.getString("address");
                 e.price = rs.getInt("price");
                 e.rate = rs.getInt("remark");
+                if (rs.getString("keyword").isEmpty()) {
+                    continue;
+                }
                 e.setKeyword(rs.getString("keyword"));
 
                 if (result.contains(e) == false) {
